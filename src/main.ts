@@ -10,7 +10,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   // enables CORS
   app.enableCors();
-
+  // Swagger config
   const config = new DocumentBuilder()
     .setTitle('Capitoil API')
     .setDescription('Documentación de Capitoil API')
