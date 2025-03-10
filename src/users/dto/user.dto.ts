@@ -46,7 +46,6 @@ export class UserDto {
   status: UserStatus = UserStatus.INACTIVE;
 }
 
-export type CreateUserDto = Omit<
-  UserDto,
-  'id' | 'createdAt' | 'updatedAt' | 'status'
->;
+export type CreateUserDto = Omit<UserDto, 'id' | 'createdAt' | 'updatedAt'>;
+
+export type UpdateUserDto = Omit<UserDto, 'id' | 'createdAt' | 'updatedAt'>;

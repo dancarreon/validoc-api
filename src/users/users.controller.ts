@@ -8,10 +8,12 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto, UserDto } from './dto/user.dto';
+import { CreateUserDto, UpdateUserDto, UserDto } from './dto/user.dto';
+import { QueryParams } from '../common/query-params.dto';
 
 @Controller('users')
 export class UsersController {
@@ -33,9 +35,19 @@ export class UsersController {
   }
 
   @Get()
-  findAll(): Promise<UserDto[]> | null {
+  findAll(@Query() query: QueryParams): Promise<UserDto[]> | null {
     try {
-      return this.usersService.findAll();
+      return this.usersService.findAll(query);
+    } catch (error) {
+      this.logger.error(error);
+      return null;
+    }
+  }
+
+  @Get('/total')
+  totalUsers(): Promise<number> | null {
+    try {
+      return this.usersService.totalUsers();
     } catch (error) {
       this.logger.error(error);
       return null;
@@ -53,7 +65,7 @@ export class UsersController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UserDto) {
+  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     try {
       return this.usersService.update(id, updateUserDto);
     } catch (error) {

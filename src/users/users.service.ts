@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { CreateUserDto, UserDto } from './dto/user.dto';
+import { CreateUserDto, UpdateUserDto, UserDto } from './dto/user.dto';
 import { PrismaService } from '../prisma/prisma.service';
+import { QueryParams } from '../common/query-params.dto';
 
 @Injectable()
 export class UsersService {
@@ -19,10 +20,20 @@ export class UsersService {
     });
   }
 
-  findAll(): Promise<UserDto[]> {
+  findAll(query: QueryParams): Promise<UserDto[]> {
     this.logger.log(`Getting all users`);
 
-    return this.prismaService.user.findMany();
+    return this.prismaService.user.findMany({
+      take: query.size,
+      skip: query.page * query.size,
+      orderBy: {
+        username: query.sort,
+      },
+    });
+  }
+
+  totalUsers(): Promise<number> | null {
+    return this.prismaService.user.count();
   }
 
   findOne(id: string): Promise<UserDto> {
@@ -31,7 +42,7 @@ export class UsersService {
     return this.prismaService.user.findUniqueOrThrow({ where: { id } });
   }
 
-  update(id: string, user: UserDto): Promise<UserDto> {
+  update(id: string, user: UpdateUserDto): Promise<UserDto> {
     this.logger.log(`Updating user with id ${id}`);
     this.logger.debug(user);
 
