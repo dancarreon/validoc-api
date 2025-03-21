@@ -97,12 +97,17 @@ export class UsersService {
     }
   }
 
-  findOne(id: string): Promise<ReadUserDto> {
+  findOne(id: string): Promise<ReadUserDto> | null {
     this.logger.log(`Getting user with id ${id}`);
 
-    return this.prismaService.user.findUniqueOrThrow({
-      where: { id },
-    });
+    if (id && id !== '') {
+      return this.prismaService.user.findUniqueOrThrow({
+        where: { id },
+      });
+    }
+
+    this.logger.log(`Cannot get user with empty id`);
+    return null;
   }
 
   async update(id: string, user: UpdateUserDto): Promise<UserDto> {
