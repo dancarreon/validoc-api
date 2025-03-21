@@ -70,7 +70,7 @@ export class UsersService {
       `Getting count of users using params: ${JSON.stringify(query)}`,
     );
 
-    if (query && query.search) {
+    if (query && query.search !== '') {
       return this.prismaService.user.count({
         where: {
           OR: [
