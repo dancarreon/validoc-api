@@ -45,7 +45,7 @@ export class UsersController {
     }
   }
 
-  @Get('/total')
+  @Get('total')
   totalUsers(@Query() query: QueryParams): Promise<number> | null {
     try {
       return this.usersService.totalUsers(query);
