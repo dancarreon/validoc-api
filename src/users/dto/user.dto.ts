@@ -49,3 +49,5 @@ export class UserDto {
 export type CreateUserDto = Omit<UserDto, 'id' | 'createdAt' | 'updatedAt'>;
 
 export type UpdateUserDto = Omit<UserDto, 'id' | 'createdAt' | 'updatedAt'>;
+
+export type ReadUserDto = Omit<UserDto, 'password' | 'createdAt' | 'updatedAt'>;

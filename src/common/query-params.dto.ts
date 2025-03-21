@@ -1,12 +1,8 @@
 import { IsNumber, IsOptional, IsString, Min } from 'class-validator';
+import { Transform } from 'class-transformer';
 
 const PAGE = 0;
 const SIZE = 10;
-
-enum SORT_ORDER {
-  ASC = 'asc',
-  DESC = 'desc',
-}
 
 export class QueryParams {
   @IsNumber()
@@ -19,9 +15,14 @@ export class QueryParams {
 
   @IsOptional()
   @IsString()
-  orderBy?: string;
+  search?: string;
 
   @IsOptional()
-  @IsString()
-  sort?: SORT_ORDER = SORT_ORDER.ASC;
+  @Transform(({ value }): any[] | null => {
+    if (!value) {
+      return null;
+    }
+    return JSON.parse(value as string) as any[];
+  })
+  orderAndSort?: any[];
 }

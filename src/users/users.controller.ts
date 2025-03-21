@@ -35,6 +35,7 @@ export class UsersController {
   }
 
   @Get()
+  //@UseGuards(JwtAuthGuard) TODO enable this for JWT authentication
   findAll(@Query() query: QueryParams): Promise<UserDto[]> | null {
     try {
       return this.usersService.findAll(query);
@@ -45,9 +46,9 @@ export class UsersController {
   }
 
   @Get('/total')
-  totalUsers(): Promise<number> | null {
+  totalUsers(@Query() query: QueryParams): Promise<number> | null {
     try {
-      return this.usersService.totalUsers();
+      return this.usersService.totalUsers(query);
     } catch (error) {
       this.logger.error(error);
       return null;
