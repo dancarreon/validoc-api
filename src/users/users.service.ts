@@ -65,38 +65,6 @@ export class UsersService {
     }
   }
 
-  totalUsers(query?: QueryParams): Promise<number> | null {
-    this.logger.log(
-      `Getting count of users using params: ${JSON.stringify(query)}`,
-    );
-
-    if (query && query.search !== '') {
-      return this.prismaService.user.count({
-        where: {
-          OR: [
-            {
-              username: { contains: query.search, mode: 'insensitive' },
-            },
-            {
-              name: { contains: query.search, mode: 'insensitive' },
-            },
-            {
-              lastName: { contains: query.search, mode: 'insensitive' },
-            },
-            {
-              email: { contains: query.search, mode: 'insensitive' },
-            },
-            {
-              phone: { contains: query.search, mode: 'insensitive' },
-            },
-          ],
-        },
-      });
-    } else {
-      return this.prismaService.user.count();
-    }
-  }
-
   findOne(id: string): Promise<ReadUserDto> | null {
     this.logger.log(`Getting user with id ${id}`);
 
