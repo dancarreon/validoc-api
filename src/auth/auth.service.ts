@@ -7,7 +7,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { AuthEntity } from './entity/auth.entity';
 import * as bcrypt from 'bcrypt';
-import { UserStatus } from '@prisma/client';
+import { Status } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -18,7 +18,7 @@ export class AuthService {
 
   async login(username: string, password: string): Promise<AuthEntity> {
     const user = await this.prisma.user.findUnique({
-      where: { username: username, status: UserStatus.ACTIVE },
+      where: { username: username, status: Status.ACTIVE },
     });
 
     if (!user) {

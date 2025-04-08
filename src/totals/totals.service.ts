@@ -39,4 +39,104 @@ export class TotalsService {
 
     return this.prismaService.user.count();
   }
+
+  totalStates(query: QueryParams) {
+    this.logger.log(
+      `Getting count of Estado using params: ${JSON.stringify(query)}`,
+    );
+
+    if (query?.search && query.search !== '') {
+      return this.prismaService.estado.count({
+        where: {
+          OR: [
+            {
+              name: { contains: query.search, mode: 'insensitive' },
+            },
+          ],
+        },
+      });
+    }
+
+    return this.prismaService.estado.count();
+  }
+
+  totalTads(query: QueryParams) {
+    this.logger.log(
+      `Getting count of Tads using params: ${JSON.stringify(query)}`,
+    );
+
+    if (query?.search && query.search !== '') {
+      return this.prismaService.tadDireccion.count({
+        where: {
+          OR: [
+            {
+              ciudad: { contains: query.search, mode: 'insensitive' },
+            },
+          ],
+        },
+      });
+    }
+
+    return this.prismaService.tadDireccion.count();
+  }
+
+  totalRazones(query: QueryParams) {
+    this.logger.log(
+      `Getting count of Razones using params: ${JSON.stringify(query)}`,
+    );
+
+    if (query?.search && query.search !== '') {
+      return this.prismaService.razonSocialComercial.count({
+        where: {
+          OR: [
+            {
+              nombre: { contains: query.search, mode: 'insensitive' },
+            },
+          ],
+        },
+      });
+    }
+
+    return this.prismaService.razonSocialComercial.count();
+  }
+
+  totalClaves(query: QueryParams) {
+    this.logger.log(
+      `Getting count of Claves using params: ${JSON.stringify(query)}`,
+    );
+
+    if (query?.search && query.search !== '') {
+      return this.prismaService.claveConcentradora.count({
+        where: {
+          OR: [
+            {
+              nombre: { contains: query.search, mode: 'insensitive' },
+            },
+          ],
+        },
+      });
+    }
+
+    return this.prismaService.claveConcentradora.count();
+  }
+
+  totalProductos(query: QueryParams) {
+    this.logger.log(
+      `Getting count of Productos using params: ${JSON.stringify(query)}`,
+    );
+
+    if (query?.search && query.search !== '') {
+      return this.prismaService.producto.count({
+        where: {
+          OR: [
+            {
+              descripcion: { contains: query.search, mode: 'insensitive' },
+            },
+          ],
+        },
+      });
+    }
+
+    return this.prismaService.producto.count();
+  }
 }

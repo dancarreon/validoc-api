@@ -17,4 +17,54 @@ export class TotalsController {
       return null;
     }
   }
+
+  @Get('estados')
+  totalEstados(@Query() query: QueryParams): Promise<number> | null {
+    try {
+      return this.totalsService.totalStates(query);
+    } catch (error) {
+      this.logger.error(error);
+      return null;
+    }
+  }
+
+  @Get('tads')
+  totalTads(@Query() query: QueryParams): Promise<number> | null {
+    try {
+      return this.totalsService.totalTads(query);
+    } catch (error) {
+      this.logger.error(error);
+      return null;
+    }
+  }
+
+  @Get('claves')
+  totalClaves(@Query() query: QueryParams): Promise<number> | null {
+    try {
+      return this.totalsService.totalClaves(query);
+    } catch (error) {
+      this.logger.error(error);
+      return null;
+    }
+  }
+
+  @Get('razones')
+  totalRazones(@Query() query: QueryParams): Promise<number> | null {
+    try {
+      return this.totalsService.totalRazones(query);
+    } catch (error) {
+      this.logger.error(error);
+      return null;
+    }
+  }
+
+  @Get('productos')
+  totalProductos(@Query() query: QueryParams): Promise<number> | null {
+    try {
+      return this.totalsService.totalProductos(query);
+    } catch (error) {
+      this.logger.error(error);
+      return null;
+    }
+  }
 }

@@ -9,29 +9,75 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  //directUrl = env("DIRECT_URL")
 }
 
 // prisma/schema.prisma
 
-enum UserStatus {
+enum Status {
   ACTIVE
   INACTIVE
 }
 
 model User {
-  id        String     @id @default(uuid())
-  username  String     @unique
+  id        String   @id @default(uuid())
+  username  String   @unique
   password  String
   name      String?
   lastName  String?
   email     String?
   phone     String?
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  status    UserStatus @default(INACTIVE)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  status    Status   @default(INACTIVE)
 
   @@index([username])
+}
+
+model TadDireccion {
+  id        String   @id @default(uuid())
+  ciudad    String
+  estado    Estado   @relation(fields: [estadoId], references: [id])
+  estadoId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  status    Status   @default(ACTIVE)
+}
+
+model Estado {
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  status    Status   @default(ACTIVE)
+
+  TadDireccion TadDireccion[]
+}
+
+model ClaveConcentradora {
+  id        String   @id @default(uuid())
+  clave     BigInt
+  nombre    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  status    Status   @default(ACTIVE)
+}
+
+model RazonSocialComercial {
+  id        String   @id @default(uuid())
+  nombre    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  status    Status   @default(ACTIVE)
+}
+
+model Producto {
+  id          String   @id @default(uuid())
+  clave       BigInt
+  descripcion String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  status      Status   @default(ACTIVE)
 }

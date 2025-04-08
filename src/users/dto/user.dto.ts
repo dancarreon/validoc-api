@@ -6,7 +6,7 @@ import {
   IsUUID,
   MinLength,
 } from 'class-validator';
-import { UserStatus } from '@prisma/client';
+import { Status } from '@prisma/client';
 
 export class UserDto {
   @IsUUID()
@@ -42,8 +42,8 @@ export class UserDto {
 
   updatedAt: Date;
 
-  @IsEnum(UserStatus)
-  status: UserStatus = UserStatus.INACTIVE;
+  @IsEnum(Status)
+  status: Status = Status.INACTIVE;
 }
 
 export type CreateUserDto = Omit<UserDto, 'id' | 'createdAt' | 'updatedAt'>;
