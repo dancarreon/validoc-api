@@ -38,12 +38,12 @@ export class UserDto {
   @IsOptional()
   phone?: string | null;
 
+  @IsEnum(Status)
+  status: Status = Status.INACTIVE;
+
   createdAt: Date;
 
   updatedAt: Date;
-
-  @IsEnum(Status)
-  status: Status = Status.INACTIVE;
 }
 
 export type CreateUserDto = Omit<UserDto, 'id' | 'createdAt' | 'updatedAt'>;
