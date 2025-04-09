@@ -17,7 +17,7 @@ export class ClaveDto {
 
   @IsString()
   @IsNotEmpty()
-  nombre: string;
+  name: string;
 
   createdAt: Date;
 

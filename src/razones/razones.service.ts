@@ -12,7 +12,7 @@ export class RazonesService {
   constructor(private prismaService: PrismaService) {}
 
   create(razon: RazonesDto) {
-    this.logger.log(`Creating a new Razon with nombre: ${razon.nombre}`);
+    this.logger.log(`Creating a new Razon with nombre: ${razon.name}`);
     this.logger.debug(razon);
 
     return this.prismaService.razonSocialComercial.create({
@@ -32,17 +32,17 @@ export class RazonesService {
         where: {
           OR: [
             {
-              nombre: { contains: query.search, mode: 'insensitive' },
+              name: { contains: query.search, mode: 'insensitive' },
             },
           ],
         },
-        orderBy: query.orderAndSort || { nombre: 'asc' },
+        orderBy: query.orderAndSort || { name: 'asc' },
       });
     } else {
       return this.prismaService.razonSocialComercial.findMany({
         take: query.size,
         skip: query.page * query.size,
-        orderBy: query.orderAndSort || { nombre: 'asc' },
+        orderBy: query.orderAndSort || { name: 'asc' },
       });
     }
   }

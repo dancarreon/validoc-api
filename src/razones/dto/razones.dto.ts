@@ -7,7 +7,7 @@ export class RazonesDto {
 
   @IsNumber()
   @IsNotEmpty()
-  nombre: string;
+  name: string;
 
   createdAt: Date;
 

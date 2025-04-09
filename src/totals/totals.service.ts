@@ -90,7 +90,7 @@ export class TotalsService {
         where: {
           OR: [
             {
-              nombre: { contains: query.search, mode: 'insensitive' },
+              name: { contains: query.search, mode: 'insensitive' },
             },
           ],
         },
@@ -110,7 +110,7 @@ export class TotalsService {
         where: {
           OR: [
             {
-              nombre: { contains: query.search, mode: 'insensitive' },
+              name: { contains: query.search, mode: 'insensitive' },
             },
           ],
         },

@@ -30,7 +30,7 @@ export class ClavesService {
         where: {
           OR: [
             {
-              nombre: { contains: query.search, mode: 'insensitive' },
+              name: { contains: query.search, mode: 'insensitive' },
             },
           ],
         },
@@ -40,7 +40,7 @@ export class ClavesService {
       return this.prismaService.claveConcentradora.findMany({
         take: query.size,
         skip: query.page * query.size,
-        orderBy: query.orderAndSort || { nombre: 'asc' },
+        orderBy: query.orderAndSort || { name: 'asc' },
       });
     }
   }
