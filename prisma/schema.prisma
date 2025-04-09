@@ -9,8 +9,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
 
@@ -59,7 +59,7 @@ model Estado {
 model ClaveConcentradora {
   id        String   @id @default(uuid())
   clave     BigInt
-  nombre    String
+  name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   status    Status   @default(ACTIVE)
@@ -67,7 +67,7 @@ model ClaveConcentradora {
 
 model RazonSocialComercial {
   id        String   @id @default(uuid())
-  nombre    String
+  name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   status    Status   @default(ACTIVE)
