@@ -1,6 +1,7 @@
 import { TadDireccion } from '../../tad/entities/tad.entity';
 import { IsEnum, IsNotEmpty, IsString, IsUUID } from 'class-validator';
 import { Status } from '@prisma/client';
+import { Type } from 'class-transformer';
 
 export class EstadoDto {
   @IsUUID()
@@ -14,6 +15,7 @@ export class EstadoDto {
 
   updatedAt: Date;
 
+  @Type(() => TadDireccion)
   tadDireccion?: TadDireccion;
 
   @IsEnum(Status)
