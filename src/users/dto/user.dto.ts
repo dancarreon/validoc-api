@@ -1,5 +1,4 @@
 import {
-  IsEnum,
   IsNotEmpty,
   IsOptional,
   IsString,
@@ -38,7 +37,6 @@ export class UserDto {
   @IsOptional()
   phone?: string | null;
 
-  @IsEnum(Status)
   status: Status = Status.INACTIVE;
 
   createdAt: Date;
