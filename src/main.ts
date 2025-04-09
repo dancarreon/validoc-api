@@ -21,7 +21,7 @@ async function bootstrap() {
   // Swagger config
   const config = new DocumentBuilder()
     .setTitle('Capitoil API')
-    .setDescription('Documentación de Capitoil API')
+    .setDescription('Documentacion de Capitoil API')
     .setVersion('1.0')
     .build();
 
