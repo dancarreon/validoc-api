@@ -1,5 +1,4 @@
 import {
-  IsEnum,
   IsNotEmpty,
   IsOptional,
   IsString,
@@ -42,7 +41,6 @@ export class UserDto {
 
   updatedAt: Date;
 
-  @IsEnum(Status)
   status: Status = Status.INACTIVE;
 }
 
