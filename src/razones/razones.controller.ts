@@ -11,6 +11,7 @@ import {
 import { RazonesService } from './razones.service';
 import { RazonesDto, UpdateRazonesDto } from './dto/razones.dto';
 import { QueryParams } from '../common/query-params.dto';
+import { ReadRazonesDto } from './dto/read-razones.dto';
 
 @Controller('razones')
 export class RazonesController {
@@ -27,8 +28,11 @@ export class RazonesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.razonesService.findOne(id);
+  async findOne(@Param('id') id: string) {
+    const result = await this.razonesService.findOne(id);
+    if (result) {
+      return new ReadRazonesDto(result);
+    }
   }
 
   @Patch(':id')

@@ -9,6 +9,13 @@ export class ClavesService {
 
   constructor(private prismaService: PrismaService) {}
 
+  customSerializer(param: any): string {
+    return JSON.stringify(param, (key, value) =>
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+      typeof value === 'bigint' ? value.toString() : value,
+    );
+  }
+
   create(clave: CreateClaveDto) {
     this.logger.log(`Creating a new clave with clave ${clave.clave}`);
     this.logger.debug(clave);
@@ -18,13 +25,13 @@ export class ClavesService {
     });
   }
 
-  findAll(query: QueryParams) {
+  async findAll(query: QueryParams) {
     this.logger.log(
       `Getting all claves using params: ${JSON.stringify(query)}`,
     );
 
     if (query.search) {
-      return this.prismaService.claveConcentradora.findMany({
+      const result = await this.prismaService.claveConcentradora.findMany({
         take: query.size,
         skip: query.page * query.size,
         where: {
@@ -34,38 +41,55 @@ export class ClavesService {
             },
           ],
         },
-        orderBy: query.orderAndSort || { clave: 'asc' },
+        orderBy: query.orderAndSort || { name: 'asc' },
       });
+
+      if (result) {
+        return this.customSerializer(result);
+      }
     } else {
-      return this.prismaService.claveConcentradora.findMany({
+      const result = await this.prismaService.claveConcentradora.findMany({
         take: query.size,
         skip: query.page * query.size,
         orderBy: query.orderAndSort || { name: 'asc' },
       });
+
+      if (result) {
+        return this.customSerializer(result);
+      }
     }
   }
 
-  findOne(id: string) {
+  async findOne(id: string) {
     this.logger.log(`Getting a clave with id ${id}`);
 
     if (id && id !== '') {
-      return this.prismaService.claveConcentradora.findUniqueOrThrow({
-        where: { id },
-      });
+      const result =
+        await this.prismaService.claveConcentradora.findUniqueOrThrow({
+          where: { id },
+        });
+
+      if (result) {
+        return this.customSerializer(result);
+      }
     }
 
     this.logger.log(`Cannot get user with empty id`);
     return null;
   }
 
-  update(id: string, clave: UpdateClaveDto) {
+  async update(id: string, clave: UpdateClaveDto) {
     this.logger.log(`Updating clave with id ${id}`);
     this.logger.debug(clave);
 
-    return this.prismaService.claveConcentradora.update({
+    const result = await this.prismaService.claveConcentradora.update({
       where: { id },
       data: clave,
     });
+
+    if (result) {
+      return this.customSerializer(result);
+    }
   }
 
   remove(id: string) {
