@@ -1,9 +1,12 @@
-import { TadDireccion } from '../../tad/entities/tad.entity';
 import { IsEnum, IsNotEmpty, IsString, IsUUID } from 'class-validator';
-import { Status } from '@prisma/client';
-import { Type } from 'class-transformer';
+import { Estado, Status } from '@prisma/client';
+import { Exclude } from 'class-transformer';
 
-export class EstadoDto {
+export class EstadoDto implements Estado {
+  constructor(partial: Partial<EstadoDto>) {
+    Object.assign(this, partial);
+  }
+
   @IsUUID()
   id: string;
 
@@ -11,12 +14,11 @@ export class EstadoDto {
   @IsNotEmpty()
   name: string;
 
+  @Exclude()
   createdAt: Date;
 
+  @Exclude()
   updatedAt: Date;
-
-  @Type(() => TadDireccion)
-  tadDireccion?: TadDireccion;
 
   @IsEnum(Status)
   status: Status = Status.ACTIVE;

@@ -1,26 +1,27 @@
-import {
-  IsEnum,
-  IsNotEmpty,
-  IsNumber,
-  IsString,
-  IsUUID,
-} from 'class-validator';
-import { Status } from '@prisma/client';
+import { IsEnum, IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { ClaveConcentradora, Status } from '@prisma/client';
+import { Exclude } from 'class-transformer';
 
-export class ClaveDto {
+export class ClaveDto implements ClaveConcentradora {
+  constructor(partial: Partial<ClaveDto>) {
+    Object.assign(this, partial);
+  }
+
   @IsUUID()
   id: string;
 
-  @IsNumber()
+  @IsString()
   @IsNotEmpty()
-  clave: number;
+  clave: string;
 
   @IsString()
   @IsNotEmpty()
   name: string;
 
+  @Exclude()
   createdAt: Date;
 
+  @Exclude()
   updatedAt: Date;
 
   @IsEnum(Status)

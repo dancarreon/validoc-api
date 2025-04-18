@@ -22,6 +22,9 @@
     "clean": "rm -rf dist",
     "vercel-build": "prisma generate && prisma migrate deploy && build"
   },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
     "@nestjs/core": "^11.0.1",

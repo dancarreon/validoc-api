@@ -9,7 +9,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { TadService } from './tad.service';
-import { TadDto, UpdateTadDto } from './dto/tad.dto';
+import { CreateTadDto, TadDto, UpdateTadDto } from './dto/tad.dto';
 import { QueryParams } from '../common/query-params.dto';
 
 @Controller('tads')
@@ -17,27 +17,28 @@ export class TadController {
   constructor(private readonly tadService: TadService) {}
 
   @Post()
-  create(@Body() createTadDto: TadDto) {
-    return this.tadService.create(createTadDto);
+  async create(@Body() createTadDto: CreateTadDto) {
+    return new TadDto(await this.tadService.create(createTadDto));
   }
 
   @Get()
-  findAll(@Query() query: QueryParams) {
-    return this.tadService.findAll(query);
+  async findAll(@Query() query: QueryParams) {
+    const tads = await this.tadService.findAll(query);
+    return tads.map((tad) => new TadDto(tad));
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.tadService.findOne(id);
+  async findOne(@Param('id') id: string) {
+    return new TadDto(await this.tadService.findOne(id));
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTadDto: UpdateTadDto) {
-    return this.tadService.update(id, updateTadDto);
+  async update(@Param('id') id: string, @Body() updateTadDto: UpdateTadDto) {
+    return new TadDto(await this.tadService.update(id, updateTadDto));
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.tadService.remove(id);
+  async remove(@Param('id') id: string) {
+    return new TadDto(await this.tadService.remove(id));
   }
 }

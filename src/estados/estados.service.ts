@@ -23,11 +23,26 @@ export class EstadosService {
       `Getting all estados using params: ${JSON.stringify(query)}`,
     );
 
-    return this.prismaService.estado.findMany({
-      take: query.size,
-      skip: query.page * query.size,
-      orderBy: query.orderAndSort || { name: 'asc' },
-    });
+    if (query.search) {
+      return this.prismaService.estado.findMany({
+        take: query.size,
+        skip: query.page * query.size,
+        where: {
+          OR: [
+            {
+              name: { contains: query.search, mode: 'insensitive' },
+            },
+          ],
+        },
+        orderBy: query.orderAndSort || { name: 'asc' },
+      });
+    } else {
+      return this.prismaService.estado.findMany({
+        take: query.size,
+        skip: query.page * query.size,
+        orderBy: query.orderAndSort || { name: 'asc' },
+      });
+    }
   }
 
   async findOne(id: string): Promise<EstadoDto> {

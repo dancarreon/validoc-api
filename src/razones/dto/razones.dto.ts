@@ -1,5 +1,6 @@
 import { IsEnum, IsNotEmpty, IsNumber, IsUUID } from 'class-validator';
 import { RazonSocialComercial, Status } from '@prisma/client';
+import { Exclude } from 'class-transformer';
 
 export class RazonesDto implements RazonSocialComercial {
   constructor(partial: Partial<RazonesDto>) {
@@ -13,8 +14,10 @@ export class RazonesDto implements RazonSocialComercial {
   @IsNotEmpty()
   name: string;
 
+  @Exclude()
   createdAt: Date;
 
+  @Exclude()
   updatedAt: Date;
 
   @IsEnum(Status)

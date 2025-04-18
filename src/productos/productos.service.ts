@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { ProductoDto, UpdateProductoDto } from './dto/producto.dto';
+import { CreateProductoDto, UpdateProductoDto } from './dto/producto.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { QueryParams } from '../common/query-params.dto';
 
@@ -9,7 +9,7 @@ export class ProductosService {
 
   constructor(private prismaService: PrismaService) {}
 
-  create(producto: ProductoDto) {
+  create(producto: CreateProductoDto) {
     this.logger.log(`Creating a new Producto with clave: ${producto.clave}`);
     this.logger.debug(producto);
 
@@ -30,6 +30,9 @@ export class ProductosService {
         where: {
           OR: [
             {
+              clave: { contains: query.search, mode: 'insensitive' },
+            },
+            {
               descripcion: { contains: query.search, mode: 'insensitive' },
             },
           ],
@@ -48,14 +51,9 @@ export class ProductosService {
   findOne(id: string) {
     this.logger.log(`Getting a Product with id ${id}`);
 
-    if (id && id !== '') {
-      return this.prismaService.producto.findUniqueOrThrow({
-        where: { id },
-      });
-    }
-
-    this.logger.log(`Cannot get Product with empty id`);
-    return null;
+    return this.prismaService.producto.findUniqueOrThrow({
+      where: { id },
+    });
   }
 
   update(id: string, producto: UpdateProductoDto) {

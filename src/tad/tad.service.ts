@@ -20,11 +20,26 @@ export class TadService {
 
   async findAll(query: QueryParams): Promise<TadDto[]> {
     this.logger.log(`Getting all tads using params: ${JSON.stringify(query)}`);
-    return this.prismaService.tadDireccion.findMany({
-      take: query.size,
-      skip: query.page * query.size,
-      orderBy: query.orderAndSort || { ciudad: 'asc' },
-    });
+    if (query.search) {
+      return this.prismaService.tadDireccion.findMany({
+        take: query.size,
+        skip: query.page * query.size,
+        where: {
+          OR: [
+            {
+              ciudad: { contains: query.search, mode: 'insensitive' },
+            },
+          ],
+        },
+        orderBy: query.orderAndSort || { ciudad: 'asc' },
+      });
+    } else {
+      return this.prismaService.tadDireccion.findMany({
+        take: query.size,
+        skip: query.page * query.size,
+        orderBy: query.orderAndSort || { ciudad: 'asc' },
+      });
+    }
   }
 
   async findOne(id: string): Promise<TadDto> {

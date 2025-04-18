@@ -9,7 +9,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { EstadosService } from './estados.service';
-import { CreateEstadoDto, UpdateEstadoDto } from './dto/estado.dto';
+import { CreateEstadoDto, EstadoDto, UpdateEstadoDto } from './dto/estado.dto';
 import { QueryParams } from '../common/query-params.dto';
 
 @Controller('estados')
@@ -17,27 +17,31 @@ export class EstadosController {
   constructor(private readonly estadosService: EstadosService) {}
 
   @Post()
-  create(@Body() createEstadoDto: CreateEstadoDto) {
-    return this.estadosService.create(createEstadoDto);
+  async create(@Body() createEstadoDto: CreateEstadoDto) {
+    return new EstadoDto(await this.estadosService.create(createEstadoDto));
   }
 
   @Get()
-  findAll(@Query() query: QueryParams) {
-    return this.estadosService.findAll(query);
+  async findAll(@Query() query: QueryParams) {
+    const estados = await this.estadosService.findAll(query);
+    return estados.map((estado) => new EstadoDto(estado));
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.estadosService.findOne(id);
+  async findOne(@Param('id') id: string) {
+    return new EstadoDto(await this.estadosService.findOne(id));
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateEstadoDto: UpdateEstadoDto) {
-    return this.estadosService.update(id, updateEstadoDto);
+  async update(
+    @Param('id') id: string,
+    @Body() updateEstadoDto: UpdateEstadoDto,
+  ) {
+    return new EstadoDto(await this.estadosService.update(id, updateEstadoDto));
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.estadosService.remove(id);
+  async remove(@Param('id') id: string) {
+    return new EstadoDto(await this.estadosService.remove(id));
   }
 }

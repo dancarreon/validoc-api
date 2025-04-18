@@ -22,10 +22,10 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto): Promise<UserDto> | null {
+  async create(@Body() createUserDto: CreateUserDto): Promise<UserDto> {
     this.logger.debug(createUserDto);
     try {
-      return this.usersService.create(createUserDto);
+      return new UserDto(await this.usersService.create(createUserDto));
     } catch (error) {
       this.logger.error(error);
       throw new NotFoundException(
@@ -36,19 +36,21 @@ export class UsersController {
 
   @Get()
   //@UseGuards(JwtAuthGuard) TODO enable this for JWT authentication
-  findAll(@Query() query: QueryParams): Promise<UserDto[]> | null {
+  async findAll(@Query() query: QueryParams): Promise<UserDto[]> {
     try {
-      return this.usersService.findAll(query);
+      const users = await this.usersService.findAll(query);
+      return users.map((user) => new UserDto(user));
     } catch (error) {
       this.logger.error(error);
-      return null;
+      return [];
     }
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string): Promise<UserDto> {
     try {
-      return this.usersService.findOne(id);
+      const user = await this.usersService.findOne(id);
+      return new UserDto({ ...user, name: user.name ?? undefined });
     } catch (error) {
       this.logger.error(error);
       throw new NotFoundException(`User with id ${id} not found`);
@@ -56,9 +58,9 @@ export class UsersController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     try {
-      return this.usersService.update(id, updateUserDto);
+      return new UserDto(await this.usersService.update(id, updateUserDto));
     } catch (error) {
       this.logger.error(error);
       throw new UnprocessableEntityException(
@@ -68,9 +70,9 @@ export class UsersController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     try {
-      return this.usersService.remove(id);
+      return new UserDto(await this.usersService.remove(id));
     } catch (error) {
       this.logger.error(error);
       throw new UnprocessableEntityException(

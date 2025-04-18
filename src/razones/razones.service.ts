@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { RazonesDto } from './dto/razones.dto';
+import { CreateRazonesDto } from './dto/razones.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { QueryParams } from '../common/query-params.dto';
 
@@ -11,7 +11,7 @@ export class RazonesService {
 
   constructor(private prismaService: PrismaService) {}
 
-  create(razon: RazonesDto) {
+  create(razon: CreateRazonesDto) {
     this.logger.log(`Creating a new Razon with nombre: ${razon.name}`);
     this.logger.debug(razon);
 
@@ -50,14 +50,9 @@ export class RazonesService {
   findOne(id: string) {
     this.logger.log(`Getting a Razon with id ${id}`);
 
-    if (id && id !== '') {
-      return this.prismaService.razonSocialComercial.findUniqueOrThrow({
-        where: { id },
-      });
-    }
-
-    this.logger.log(`Cannot get Razon with empty id`);
-    return null;
+    return this.prismaService.razonSocialComercial.findUniqueOrThrow({
+      where: { id },
+    });
   }
 
   update(id: string, razon: UpdateRazoneDto) {

@@ -1,10 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import {
-  CreateUserDto,
-  ReadUserDto,
-  UpdateUserDto,
-  UserDto,
-} from './dto/user.dto';
+import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { QueryParams } from '../common/query-params.dto';
 import * as bcrypt from 'bcrypt';
@@ -17,7 +12,7 @@ export class UsersService {
 
   constructor(private prismaService: PrismaService) {}
 
-  async create(user: CreateUserDto): Promise<UserDto> {
+  async create(user: CreateUserDto) {
     this.logger.log(`Creating a new user with username ${user.username}`);
     this.logger.debug(user);
 
@@ -28,7 +23,7 @@ export class UsersService {
     });
   }
 
-  findAll(query: QueryParams): Promise<UserDto[]> {
+  findAll(query: QueryParams) {
     this.logger.log(`Getting all users using params: ${JSON.stringify(query)}`);
 
     if (query.search) {
@@ -65,20 +60,15 @@ export class UsersService {
     }
   }
 
-  findOne(id: string): Promise<ReadUserDto> | null {
+  findOne(id: string) {
     this.logger.log(`Getting user with id ${id}`);
 
-    if (id && id !== '') {
-      return this.prismaService.user.findUniqueOrThrow({
-        where: { id },
-      });
-    }
-
-    this.logger.log(`Cannot get user with empty id`);
-    return null;
+    return this.prismaService.user.findUniqueOrThrow({
+      where: { id },
+    });
   }
 
-  async update(id: string, user: UpdateUserDto): Promise<UserDto> {
+  async update(id: string, user: UpdateUserDto) {
     this.logger.log(`Updating user with id ${id}`);
     this.logger.debug(user);
 
@@ -92,7 +82,7 @@ export class UsersService {
     });
   }
 
-  remove(id: string): Promise<UserDto> {
+  remove(id: string) {
     this.logger.log(`Removing user with id ${id}`);
 
     return this.prismaService.user.delete({ where: { id } });

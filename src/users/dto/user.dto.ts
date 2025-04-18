@@ -6,9 +6,14 @@ import {
   IsUUID,
   MinLength,
 } from 'class-validator';
-import { Status } from '@prisma/client';
+import { Status, User } from '@prisma/client';
+import { Exclude } from 'class-transformer';
 
-export class UserDto {
+export class UserDto implements User {
+  constructor(partial: Partial<UserDto>) {
+    Object.assign(this, partial);
+  }
+
   @IsUUID()
   id: string;
 
@@ -20,34 +25,35 @@ export class UserDto {
   @IsString()
   @IsNotEmpty()
   @MinLength(6)
+  @Exclude()
   password: string;
 
   @IsString()
   @IsOptional()
-  name?: string | null;
+  name: string | null;
 
   @IsString()
   @IsOptional()
-  lastName?: string | null;
+  lastName: string | null;
 
   @IsString()
   @IsOptional()
-  email?: string | null;
+  email: string | null;
 
   @IsString()
   @IsOptional()
-  phone?: string | null;
+  phone: string | null;
 
   @IsEnum(Status)
   status: Status = Status.INACTIVE;
 
+  @Exclude()
   createdAt: Date;
 
+  @Exclude()
   updatedAt: Date;
 }
 
 export type CreateUserDto = Omit<UserDto, 'id' | 'createdAt' | 'updatedAt'>;
 
 export type UpdateUserDto = Omit<UserDto, 'id' | 'createdAt' | 'updatedAt'>;
-
-export type ReadUserDto = Omit<UserDto, 'password' | 'createdAt' | 'updatedAt'>;

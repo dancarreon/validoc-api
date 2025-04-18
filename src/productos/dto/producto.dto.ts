@@ -1,26 +1,27 @@
-import {
-  IsEnum,
-  IsNotEmpty,
-  IsNumber,
-  IsString,
-  IsUUID,
-} from 'class-validator';
-import { Status } from '@prisma/client';
+import { IsEnum, IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { Producto, Status } from '@prisma/client';
+import { Exclude } from 'class-transformer';
 
-export class ProductoDto {
+export class ProductoDto implements Producto {
+  constructor(partial: Partial<ProductoDto>) {
+    Object.assign(this, partial);
+  }
+
   @IsUUID()
   id: string;
 
-  @IsNumber()
+  @IsString()
   @IsNotEmpty()
-  clave: number;
+  clave: string;
 
   @IsString()
   @IsNotEmpty()
   descripcion: string;
 
+  @Exclude()
   createdAt: Date;
 
+  @Exclude()
   updatedAt: Date;
 
   @IsEnum(Status)
