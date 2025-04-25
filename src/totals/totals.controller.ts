@@ -67,4 +67,14 @@ export class TotalsController {
       return null;
     }
   }
+
+  @Get('transportistas')
+  totalTransportistas(@Query() query: QueryParams): Promise<number> | null {
+    try {
+      return this.totalsService.totalTransportistas(query);
+    } catch (error) {
+      this.logger.error(error);
+      return null;
+    }
+  }
 }

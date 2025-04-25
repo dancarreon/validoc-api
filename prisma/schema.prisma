@@ -81,3 +81,13 @@ model Producto {
   updatedAt   DateTime @updatedAt
   status      Status   @default(ACTIVE)
 }
+
+model Transportista {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name      String?
+  lastName  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  status    Status   @default(ACTIVE)
+  generated Boolean  @default(true)
+}

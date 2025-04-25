@@ -24,6 +24,9 @@ export class TadService {
       return this.prismaService.tadDireccion.findMany({
         take: query.size,
         skip: query.page * query.size,
+        include: {
+          estado: true,
+        },
         where: {
           OR: [
             {
@@ -37,6 +40,9 @@ export class TadService {
       return this.prismaService.tadDireccion.findMany({
         take: query.size,
         skip: query.page * query.size,
+        include: {
+          estado: true,
+        },
         orderBy: query.orderAndSort || { ciudad: 'asc' },
       });
     }

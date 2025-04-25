@@ -139,4 +139,27 @@ export class TotalsService {
 
     return this.prismaService.producto.count();
   }
+
+  totalTransportistas(query: QueryParams) {
+    this.logger.log(
+      `Getting count of Transportistas using params: ${JSON.stringify(query)}`,
+    );
+
+    if (query?.search && query.search !== '') {
+      return this.prismaService.transportista.count({
+        where: {
+          OR: [
+            {
+              name: { contains: query.search, mode: 'insensitive' },
+            },
+            {
+              lastName: { contains: query.search, mode: 'insensitive' },
+            },
+          ],
+        },
+      });
+    }
+
+    return this.prismaService.transportista.count();
+  }
 }

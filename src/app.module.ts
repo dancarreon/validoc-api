@@ -10,6 +10,8 @@ import { TadModule } from './tad/tad.module';
 import { ClavesModule } from './claves/claves.module';
 import { RazonesModule } from './razones/razones.module';
 import { ProductosModule } from './productos/productos.module';
+import { TransportistasModule } from './transportistas/transportistas.module';
+import { RandomModule } from './random/random.module';
 
 @Module({
   imports: [
@@ -22,6 +24,8 @@ import { ProductosModule } from './productos/productos.module';
     ClavesModule,
     RazonesModule,
     ProductosModule,
+    TransportistasModule,
+    RandomModule,
   ],
   controllers: [AppController],
   providers: [AppService],
