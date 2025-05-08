@@ -15,6 +15,10 @@ export class TadDto implements TadDireccion {
   ciudad: string;
 
   @IsString()
+  @IsNotEmpty()
+  direccion: string;
+
+  @IsString()
   estadoId: string;
 
   @Exclude()

@@ -162,4 +162,55 @@ export class TotalsService {
 
     return this.prismaService.transportista.count();
   }
+
+  totalTrazas(query: QueryParams) {
+    this.logger.log(
+      `Getting all trazas using params: ${JSON.stringify(query)}`,
+    );
+
+    if (query.search) {
+      return this.prismaService.traza.count({
+        take: query.size,
+        skip: query.page * query.size,
+        where: {
+          OR: [
+            {
+              destino: { contains: query.search, mode: 'insensitive' },
+            },
+            {
+              nombreTransportista: {
+                contains: query.search,
+                mode: 'insensitive',
+              },
+            },
+            {
+              nombreOperador: { contains: query.search, mode: 'insensitive' },
+            },
+            {
+              folioPemex1: { contains: query.search, mode: 'insensitive' },
+            },
+            {
+              folioRemisionNacional: {
+                contains: query.search,
+                mode: 'insensitive',
+              },
+            },
+            {
+              folioTrasvase: { contains: query.search, mode: 'insensitive' },
+            },
+            {
+              folio: { contains: query.search, mode: 'insensitive' },
+            },
+          ],
+        },
+        orderBy: query.orderAndSort || { createdAt: 'desc' },
+      });
+    } else {
+      return this.prismaService.traza.count({
+        take: query.size,
+        skip: query.page * query.size,
+        orderBy: query.orderAndSort || { createdAt: 'desc' },
+      });
+    }
+  }
 }

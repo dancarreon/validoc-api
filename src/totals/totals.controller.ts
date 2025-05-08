@@ -77,4 +77,14 @@ export class TotalsController {
       return null;
     }
   }
+
+  @Get('trazas')
+  totalTrazas(@Query() query: QueryParams): Promise<number> | null {
+    try {
+      return this.totalsService.totalTrazas(query);
+    } catch (error) {
+      this.logger.error(error);
+      return null;
+    }
+  }
 }

@@ -41,9 +41,14 @@ model TadDireccion {
   ciudad    String
   estado    Estado   @relation(fields: [estadoId], references: [id])
   estadoId  String   @db.Uuid
+  direccion String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   status    Status   @default(ACTIVE)
+  Traza     Traza[]
+
+  @@index([ciudad], type: BTree)
+  @@index([estadoId], type: BTree)
 }
 
 model Estado {
@@ -54,6 +59,8 @@ model Estado {
   status    Status   @default(ACTIVE)
 
   TadDireccion TadDireccion[]
+
+  @@index([name], type: BTree)
 }
 
 model ClaveConcentradora {
@@ -63,6 +70,10 @@ model ClaveConcentradora {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   status    Status   @default(ACTIVE)
+  Traza     Traza[]
+
+  @@index([clave], type: BTree)
+  @@index([name], type: BTree)
 }
 
 model RazonSocialComercial {
@@ -71,6 +82,9 @@ model RazonSocialComercial {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   status    Status   @default(ACTIVE)
+  Traza     Traza[]
+
+  @@index([name], type: BTree)
 }
 
 model Producto {
@@ -80,6 +94,9 @@ model Producto {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   status      Status   @default(ACTIVE)
+  Traza       Traza[]
+
+  @@index([clave], type: BTree)
 }
 
 model Transportista {
@@ -90,4 +107,62 @@ model Transportista {
   updatedAt DateTime @updatedAt
   status    Status   @default(ACTIVE)
   generated Boolean  @default(true)
+
+  @@index([name], type: BTree)
+  @@index([lastName], type: BTree)
+}
+
+model Traza {
+  id                          String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt                   DateTime              @default(now())
+  updatedAt                   DateTime              @updatedAt
+  status                      Status                @default(ACTIVE)
+  tadDireccion                TadDireccion?         @relation(fields: [tadDireccionId], references: [id])
+  tadDireccionId              String?               @db.Uuid
+  claveConcentradora          ClaveConcentradora?   @relation(fields: [claveConcentradoraId], references: [id])
+  claveConcentradoraId        String?               @db.Uuid
+  razonSocialComercial        RazonSocialComercial? @relation(fields: [razonSocialComercialId], references: [id])
+  razonSocialComercialId      String?               @db.Uuid
+  producto                    Producto?             @relation(fields: [productoId], references: [id])
+  productoId                  String?               @db.Uuid
+  capAutotanque1              Float?
+  capAutotanque2              Float?
+  capAutotanque3              Float?
+  litrosTotales               Float?
+  precioLitro                 Float?
+  destino                     String?
+  sello1Autotanque1           String?
+  sello2Autotanque1           String?
+  sello1Autotanque2           String?
+  sello2Autotanque2           String?
+  nombreTransportista         String?
+  nombreOperador              String?
+  fechaHoraPemex              String?
+  fechaHoraTrasvase           String?
+  folioPemex1                 String?
+  folioPemex2                 String?
+  folioPemex3                 String?
+  folioFiscalPemex1           String?
+  folioFiscalPemex2           String?
+  folioFiscalPemex3           String?
+  folioRemisionNacional       String?
+  folioFiscalRemisionNacional String?
+  folioTrasvase               String?
+  numeroTractor               String?
+  placasTractor               String?
+  autotanque1                 String?
+  placasAutotanque1           String?
+  autotanque2                 String?
+  placasAutotanque2           String?
+  autotanque3                 String?
+  placasAutotanque3           String?
+  folio                       String?
+  // Carta Porte
+  cfi                         String?
+  destinoCorto                String?
+  numeroLicencia              String?
+  marcaUnidad1                String?
+  folioCartaPorte             String?
+  folioFiscalCartaPorte       String?
+  fechaHoraCartaPorte         String?
 }

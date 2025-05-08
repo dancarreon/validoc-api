@@ -12,6 +12,7 @@ import { RazonesModule } from './razones/razones.module';
 import { ProductosModule } from './productos/productos.module';
 import { TransportistasModule } from './transportistas/transportistas.module';
 import { RandomModule } from './random/random.module';
+import { TrazaModule } from './traza/traza.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { RandomModule } from './random/random.module';
     ProductosModule,
     TransportistasModule,
     RandomModule,
+    TrazaModule,
   ],
   controllers: [AppController],
   providers: [AppService],

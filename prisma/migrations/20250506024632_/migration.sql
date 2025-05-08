@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "Traza" ALTER COLUMN "fechaHoraPemex" SET DATA TYPE TEXT,
+ALTER COLUMN "fechaHoraTrasvase" SET DATA TYPE TEXT,
+ALTER COLUMN "fechaHoraCartaPorte" SET DATA TYPE TEXT;

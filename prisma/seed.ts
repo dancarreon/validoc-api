@@ -35,6 +35,7 @@ async function createTads() {
       const tadResultado = await prisma.tadDireccion.createMany({
         data: {
           ciudad: tad.ciudad,
+          direccion: tad.direccion,
           estadoId: estado.id,
         },
       });
