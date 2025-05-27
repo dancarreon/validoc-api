@@ -7,6 +7,7 @@ import {
   Patch,
   Post,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ProductosService } from './productos.service';
 import {
@@ -15,8 +16,10 @@ import {
   UpdateProductoDto,
 } from './dto/producto.dto';
 import { QueryParams } from '../common/query-params.dto';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Controller('productos')
+@UseInterceptors(CacheInterceptor)
 export class ProductosController {
   constructor(private readonly productosService: ProductosService) {}
 

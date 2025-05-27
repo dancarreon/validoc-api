@@ -7,12 +7,15 @@ import {
   Patch,
   Post,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
 import { EstadosService } from './estados.service';
 import { CreateEstadoDto, EstadoDto, UpdateEstadoDto } from './dto/estado.dto';
 import { QueryParams } from '../common/query-params.dto';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Controller('estados')
+@UseInterceptors(CacheInterceptor)
 export class EstadosController {
   constructor(private readonly estadosService: EstadosService) {}
 

@@ -7,6 +7,7 @@ import {
   Patch,
   Post,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
 import { RazonesService } from './razones.service';
 import {
@@ -15,8 +16,10 @@ import {
   UpdateRazonesDto,
 } from './dto/razones.dto';
 import { QueryParams } from '../common/query-params.dto';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Controller('razones')
+@UseInterceptors(CacheInterceptor)
 export class RazonesController {
   constructor(private readonly razonesService: RazonesService) {}
 

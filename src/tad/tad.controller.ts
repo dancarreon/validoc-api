@@ -7,12 +7,15 @@ import {
   Patch,
   Post,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
 import { TadService } from './tad.service';
 import { CreateTadDto, TadDto, UpdateTadDto } from './dto/tad.dto';
 import { QueryParams } from '../common/query-params.dto';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Controller('tads')
+@UseInterceptors(CacheInterceptor)
 export class TadController {
   constructor(private readonly tadService: TadService) {}
 

@@ -13,6 +13,7 @@ import { ProductosModule } from './productos/productos.module';
 import { TransportistasModule } from './transportistas/transportistas.module';
 import { RandomModule } from './random/random.module';
 import { TrazaModule } from './traza/traza.module';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   imports: [
@@ -28,6 +29,10 @@ import { TrazaModule } from './traza/traza.module';
     TransportistasModule,
     RandomModule,
     TrazaModule,
+    CacheModule.register({
+      isGlobal: true,
+      ttl: 3600000, // 12 hours
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,8 +1,16 @@
-import { Controller, Get, Logger, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Logger,
+  Query,
+  UseInterceptors,
+} from '@nestjs/common';
 import { TotalsService } from './totals.service';
 import { QueryParams } from '../common/query-params.dto';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Controller('totals')
+@UseInterceptors(CacheInterceptor)
 export class TotalsController {
   private logger = new Logger(TotalsController.name);
 
