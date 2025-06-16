@@ -1,0 +1,168 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  //directUrl = env("DIRECT_URL")
+}
+
+// prisma/schema.prisma
+
+enum Status {
+  ACTIVE
+  INACTIVE
+}
+
+model User {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  username  String   @unique
+  password  String
+  name      String?
+  lastName  String?
+  email     String?
+  phone     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  status    Status   @default(INACTIVE)
+
+  @@index([username])
+}
+
+model TadDireccion {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  estado    Estado   @relation(fields: [estadoId], references: [id])
+  estadoId  String   @db.Uuid
+  ciudad    String
+  direccion String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  status    Status   @default(ACTIVE)
+  Traza     Traza[]
+
+  @@index([ciudad], type: BTree)
+  @@index([estadoId], type: BTree)
+}
+
+model Estado {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  status    Status   @default(ACTIVE)
+
+  TadDireccion TadDireccion[]
+
+  @@index([name], type: BTree)
+}
+
+model ClaveConcentradora {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  clave     String
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  status    Status   @default(ACTIVE)
+  Traza     Traza[]
+
+  @@index([clave], type: BTree)
+  @@index([name], type: BTree)
+}
+
+model RazonSocialComercial {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  status    Status   @default(ACTIVE)
+  Traza     Traza[]
+
+  @@index([name], type: BTree)
+}
+
+model Producto {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  clave       String
+  descripcion String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  status      Status   @default(ACTIVE)
+  Traza       Traza[]
+
+  @@index([clave], type: BTree)
+}
+
+model Transportista {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name      String?
+  lastName  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  status    Status   @default(ACTIVE)
+  generated Boolean  @default(true)
+
+  @@index([name], type: BTree)
+  @@index([lastName], type: BTree)
+}
+
+model Traza {
+  id                          String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt                   DateTime              @default(now())
+  updatedAt                   DateTime              @updatedAt
+  status                      Status                @default(ACTIVE)
+  tadDireccion                TadDireccion?         @relation(fields: [tadDireccionId], references: [id])
+  tadDireccionId              String?               @db.Uuid
+  claveConcentradora          ClaveConcentradora?   @relation(fields: [claveConcentradoraId], references: [id])
+  claveConcentradoraId        String?               @db.Uuid
+  razonSocialComercial        RazonSocialComercial? @relation(fields: [razonSocialComercialId], references: [id])
+  razonSocialComercialId      String?               @db.Uuid
+  producto                    Producto?             @relation(fields: [productoId], references: [id])
+  productoId                  String?               @db.Uuid
+  capAutotanque1              Float?
+  capAutotanque2              Float?
+  capAutotanque3              Float?
+  litrosTotales               Float?
+  precioLitro                 Float?
+  destino                     String?
+  sello1Autotanque1           String?
+  sello2Autotanque1           String?
+  sello1Autotanque2           String?
+  sello2Autotanque2           String?
+  nombreTransportista         String?
+  nombreOperador              String?
+  fechaHoraPemex              String?
+  fechaHoraTrasvase           String?
+  folioPemex1                 String?
+  folioPemex2                 String?
+  folioPemex3                 String?
+  folioFiscalPemex1           String?
+  folioFiscalPemex2           String?
+  folioFiscalPemex3           String?
+  folioRemisionNacional       String?
+  folioFiscalRemisionNacional String?
+  folioTrasvase               String?
+  numeroTractor               String?
+  placasTractor               String?
+  autotanque1                 String?
+  placasAutotanque1           String?
+  autotanque2                 String?
+  placasAutotanque2           String?
+  autotanque3                 String?
+  placasAutotanque3           String?
+  folio                       String?
+  // Carta Porte
+  cfi                         String?
+  destinoCorto                String?
+  numeroLicencia              String?
+  marcaUnidad1                String?
+  folioCartaPorte             String?
+  folioFiscalCartaPorte       String?
+  fechaHoraCartaPorte         String?
+}
