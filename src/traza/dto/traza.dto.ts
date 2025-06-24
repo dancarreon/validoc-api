@@ -48,6 +48,10 @@ export class TrazaDto implements Traza {
 
   @IsOptional()
   @IsNumber()
+  capAutotanque4: number | null;
+
+  @IsOptional()
+  @IsNumber()
   litrosTotales: number | null;
 
   @IsOptional()

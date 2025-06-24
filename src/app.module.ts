@@ -14,6 +14,7 @@ import { TransportistasModule } from './transportistas/transportistas.module';
 import { RandomModule } from './random/random.module';
 import { TrazaModule } from './traza/traza.module';
 import { CacheModule } from '@nestjs/cache-manager';
+import { TemplateModule } from './template/template.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { CacheModule } from '@nestjs/cache-manager';
       isGlobal: true,
       ttl: 3600000, // 12 hours
     }),
+    TemplateModule,
   ],
   controllers: [AppController],
   providers: [AppService],
