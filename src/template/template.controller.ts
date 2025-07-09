@@ -21,8 +21,8 @@ import {
 import { QueryParams } from '../common/query-params.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Express, Response } from 'express';
-import { join } from 'path';
-import { createReadStream } from 'fs';
+import * as fs from 'fs';
+import * as path from 'path';
 
 @Controller('templates')
 export class TemplateController {
@@ -60,18 +60,20 @@ export class TemplateController {
         'inline; filename="' + fileName + '"',
       );
 
-      const filePath = join(
-        __dirname,
-        '..',
-        '..',
-        '..',
+      const filePath = path.join(
+        process.cwd(),
         'uploads',
         'documents',
         fileName,
       );
-      const stream = createReadStream(filePath);
 
-      stream.pipe(res);
+      if (fs.existsSync(filePath)) {
+        const stream = fs.createReadStream(filePath);
+        stream.pipe(res);
+      } else {
+        this.logger.error(`File ${filePath} not found`);
+        res.status(404).send('File not found');
+      }
     } catch (error) {
       this.logger.error(`Error retrieving file ${fileName}: ${error}`);
       throw new Error('Error retrieving file');

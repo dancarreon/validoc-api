@@ -9,9 +9,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-  //directUrl = env("DIRECT_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 // prisma/schema.prisma
@@ -192,6 +192,7 @@ model TemplateField {
   fontFamily String
   fontSize   Float
   align      String
+  color      String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 

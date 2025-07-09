@@ -41,6 +41,9 @@ export class TemplateFieldDto implements TemplateField {
   @IsString()
   align: string;
 
+  @IsString()
+  color: string;
+
   @Exclude()
   createdAt: Date;
 
