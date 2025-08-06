@@ -15,6 +15,8 @@ import { RandomModule } from './random/random.module';
 import { TrazaModule } from './traza/traza.module';
 import { CacheModule } from '@nestjs/cache-manager';
 import { TemplateModule } from './template/template.module';
+import { ClientsModule } from './clients/clients.module';
+import { SeedModule } from './seed/seed.module';
 
 @Module({
   imports: [
@@ -35,6 +37,8 @@ import { TemplateModule } from './template/template.module';
       ttl: 3600000, // 12 hours
     }),
     TemplateModule,
+    ClientsModule,
+    SeedModule,
   ],
   controllers: [AppController],
   providers: [AppService],

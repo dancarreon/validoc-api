@@ -75,7 +75,13 @@ export class TrazaService {
     return this.prismaService.traza.findUniqueOrThrow({
       where: { id },
       include: {
-        tadDireccion: true,
+        tadDireccion: {
+          select: {
+            ciudad: true,
+            estado: true,
+            direccion: true,
+          },
+        },
         claveConcentradora: true,
         razonSocialComercial: true,
         producto: true,

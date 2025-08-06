@@ -9,9 +9,9 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  //directUrl = env("DIRECT_URL")
 }
 
 // prisma/schema.prisma
@@ -169,13 +169,14 @@ model Traza {
 }
 
 model Template {
-  id        String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name      String
-  createdAt DateTime        @default(now())
-  updatedAt DateTime        @updatedAt
-  status    Status          @default(ACTIVE)
-  fields    TemplateField[]
-  pdfFile   String?
+  id             String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name           String
+  status         Status          @default(ACTIVE)
+  fields         TemplateField[]
+  pdfFile        String?
+  containerWidth Float
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
 
   @@index([name], type: BTree)
 }
@@ -197,4 +198,22 @@ model TemplateField {
   updatedAt  DateTime @updatedAt
 
   @@index([name], type: BTree)
+}
+
+model Cliente {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  noCliente      String   @unique
+  name           String
+  razonSocial    String
+  rfc            String
+  unbMx          String
+  direccion      String
+  direccionCorta String
+  id2            String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  status         Status   @default(ACTIVE)
+
+  @@index([noCliente], type: BTree)
+  @@index([rfc], type: BTree)
 }

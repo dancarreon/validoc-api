@@ -213,4 +213,68 @@ export class TotalsService {
       });
     }
   }
+
+  totalTemplates(query: QueryParams) {
+    this.logger.log(
+      `Getting count of Templates using params: ${JSON.stringify(query)}`,
+    );
+
+    if (query?.search && query.search !== '') {
+      return this.prismaService.template.count({
+        where: {
+          OR: [
+            {
+              name: { contains: query.search, mode: 'insensitive' },
+            },
+            {
+              pdfFile: { contains: query.search, mode: 'insensitive' },
+            },
+          ],
+        },
+      });
+    }
+
+    return this.prismaService.template.count();
+  }
+
+  totalClients(query: QueryParams) {
+    this.logger.log(
+      `Getting count of Clients using params: ${JSON.stringify(query)}`,
+    );
+
+    if (query?.search && query.search !== '') {
+      return this.prismaService.cliente.count({
+        where: {
+          OR: [
+            {
+              name: { contains: query.search, mode: 'insensitive' },
+            },
+            {
+              noCliente: { contains: query.search, mode: 'insensitive' },
+            },
+            {
+              razonSocial: { contains: query.search, mode: 'insensitive' },
+            },
+            {
+              rfc: { contains: query.search, mode: 'insensitive' },
+            },
+            {
+              unbMx: { contains: query.search, mode: 'insensitive' },
+            },
+            {
+              direccion: { contains: query.search, mode: 'insensitive' },
+            },
+            {
+              direccionCorta: { contains: query.search, mode: 'insensitive' },
+            },
+            {
+              id2: { contains: query.search, mode: 'insensitive' },
+            },
+          ],
+        },
+      });
+    }
+
+    return this.prismaService.cliente.count();
+  }
 }

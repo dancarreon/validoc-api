@@ -1,5 +1,5 @@
 import { Status, Template } from '@prisma/client';
-import { IsEnum, IsString, IsUUID } from 'class-validator';
+import { IsEnum, IsNumber, IsString, IsUUID } from 'class-validator';
 import { Exclude } from 'class-transformer';
 import { TemplateFieldDto } from './template-field.dto';
 
@@ -14,18 +14,22 @@ export class TemplateDto implements Template {
   @IsString()
   name: string;
 
-  @Exclude()
-  createdAt: Date;
-
-  @Exclude()
-  updatedAt: Date;
-
   @IsEnum(Status)
   status: Status = Status.ACTIVE;
 
   fields: TemplateFieldDto[];
 
+  @IsString()
   pdfFile: string | null;
+
+  @IsNumber()
+  containerWidth: number;
+
+  @Exclude()
+  createdAt: Date;
+
+  @Exclude()
+  updatedAt: Date;
 }
 
 export type CreateTemplateDto = Omit<

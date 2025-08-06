@@ -95,4 +95,24 @@ export class TotalsController {
       return null;
     }
   }
+
+  @Get('templates')
+  totalTemplates(@Query() query: QueryParams): Promise<number> | null {
+    try {
+      return this.totalsService.totalTemplates(query);
+    } catch (error) {
+      this.logger.error(error);
+      return null;
+    }
+  }
+
+  @Get('clients')
+  totalClients(@Query() query: QueryParams): Promise<number> | null {
+    try {
+      return this.totalsService.totalClients(query);
+    } catch (error) {
+      this.logger.error(error);
+      return null;
+    }
+  }
 }

@@ -1,18 +1,29 @@
 import { PrismaClient } from '@prisma/client';
-import { productosJSON } from './data/productos';
-import { clavesJSON } from './data/claves';
-import { razonJSON } from './data/razonSocial';
-import { estadosJSON } from './data/estados';
-import { tadsJSON } from './data/tads';
-import { transportistasJSON } from './data/transportistas';
+import { productosJSON } from './seed_data/productos';
+import { clavesJSON } from './seed_data/claves';
+import { razonJSON } from './seed_data/razonSocial';
+import { estadosJSON } from './seed_data/estados';
+import { tadsJSON } from './seed_data/tads';
+import { transportistasJSON } from './seed_data/transportistas';
+import { clientsJSON } from './seed_data/clients';
 
 const prisma = new PrismaClient();
 
 async function createStates() {
-  const states = await prisma.estado.createMany({
-    data: estadosJSON,
-  });
-  console.log('Estados creados:', states);
+  for (const estado of estadosJSON) {
+    const state = await prisma.estado.findFirst({
+      where: {
+        name: estado.name,
+      },
+    });
+
+    if (!state) {
+      const newState = await prisma.estado.create({
+        data: { name: estado.name },
+      });
+      console.log('Estado creado:', newState);
+    }
+  }
 }
 
 createStates()
@@ -31,16 +42,22 @@ async function createTads() {
       where: { name: tad.estado },
     });
 
-    if (estado) {
-      const tadResultado = await prisma.tadDireccion.createMany({
+    const existingTad = await prisma.tadDireccion.findFirst({
+      where: {
+        ciudad: tad.ciudad,
+        estadoId: estado?.id,
+      },
+    });
+
+    if (!existingTad && estado?.id) {
+      const newTad = await prisma.tadDireccion.create({
         data: {
           ciudad: tad.ciudad,
-          direccion: tad.direccion,
           estadoId: estado.id,
+          direccion: tad.direccion,
         },
       });
-
-      console.log('TAD creado:', tadResultado);
+      console.log('TAD creado:', newTad);
     }
   }
 }
@@ -56,10 +73,20 @@ createTads()
   });
 
 async function createProducts() {
-  const products = await prisma.producto.createMany({
-    data: productosJSON,
-  });
-  console.log('Productos creados:', products);
+  for (const producto of productosJSON) {
+    const existingProduct = await prisma.producto.findFirst({
+      where: {
+        clave: producto.clave,
+      },
+    });
+
+    if (!existingProduct) {
+      const newProduct = await prisma.producto.create({
+        data: producto,
+      });
+      console.log('Producto creado:', newProduct);
+    }
+  }
 }
 
 createProducts()
@@ -73,10 +100,20 @@ createProducts()
   });
 
 async function createClaves() {
-  const claves = await prisma.claveConcentradora.createMany({
-    data: clavesJSON,
-  });
-  console.log('Claves creadas:', claves);
+  for (const clave of clavesJSON) {
+    const existingClave = await prisma.claveConcentradora.findFirst({
+      where: {
+        clave: clave.clave,
+      },
+    });
+
+    if (!existingClave) {
+      const newClave = await prisma.claveConcentradora.create({
+        data: clave,
+      });
+      console.log('Clave creada:', newClave);
+    }
+  }
 }
 
 createClaves()
@@ -90,10 +127,20 @@ createClaves()
   });
 
 async function razonSocial() {
-  const razonSocial = await prisma.razonSocialComercial.createMany({
-    data: razonJSON,
-  });
-  console.log('Razones sociales creadas:', razonSocial);
+  for (const razon of razonJSON) {
+    const existingRazon = await prisma.razonSocialComercial.findFirst({
+      where: {
+        name: razon.name,
+      },
+    });
+
+    if (!existingRazon) {
+      const newRazon = await prisma.razonSocialComercial.create({
+        data: razon,
+      });
+      console.log('Razón social creada:', newRazon);
+    }
+  }
 }
 
 razonSocial()
@@ -107,13 +154,56 @@ razonSocial()
   });
 
 async function transportistas() {
-  const transportistas = await prisma.transportista.createMany({
-    data: transportistasJSON,
-  });
-  console.log('Transportistas creados:', transportistas);
+  for (const transportista of transportistasJSON) {
+    const existingTransportista = await prisma.transportista.findFirst({
+      where: {
+        name: transportista.name,
+        lastName: transportista.lastName,
+      },
+    });
+
+    if (!existingTransportista) {
+      const newTransportista = await prisma.transportista.create({
+        data: transportista,
+      });
+      console.log('Transportista creado:', newTransportista);
+    }
+  }
 }
 
 transportistas()
+  .then(async () => {
+    await prisma.$disconnect();
+  })
+  .catch(async (e) => {
+    console.error(e);
+    await prisma.$disconnect();
+    process.exit(1);
+  });
+
+async function clients() {
+  for (const client of clientsJSON) {
+    const existingClient = await prisma.cliente.findFirst({
+      where: {
+        rfc: client.rfc,
+      },
+    });
+
+    if (!existingClient) {
+      try {
+        const newClient = await prisma.cliente.create({
+          data: client,
+        });
+        console.log('Cliente creado:', newClient);
+      } catch (error) {
+        console.error('Error creando cliente:', error);
+        console.log('Datos del cliente:', client);
+      }
+    }
+  }
+}
+
+clients()
   .then(async () => {
     await prisma.$disconnect();
   })
