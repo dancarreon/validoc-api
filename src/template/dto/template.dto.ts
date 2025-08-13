@@ -37,7 +37,4 @@ export type CreateTemplateDto = Omit<
   'id' | 'createdAt' | 'updatedAt'
 >;
 
-export type UpdateTemplateDto = Omit<
-  TemplateDto,
-  'id' | 'createdAt' | 'updatedAt'
->;
+export type UpdateTemplateDto = Omit<TemplateDto, 'createdAt'>;

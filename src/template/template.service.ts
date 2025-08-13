@@ -66,7 +66,7 @@ export class TemplateService {
   async findOne(id: string) {
     this.logger.log(`Fetching template with id ${id}`);
     try {
-      return this.prismaService.template.findUniqueOrThrow({
+      return await this.prismaService.template.findUniqueOrThrow({
         where: { id },
         include: {
           fields: true,
@@ -79,21 +79,31 @@ export class TemplateService {
   }
 
   async update(id: string, updateTemplateDto: UpdateTemplateDto) {
-    this.logger.log(`Updating template with id ${id}`);
+    this.logger.log(
+      `Updating template with id ${id} with data: ${JSON.stringify(updateTemplateDto)}`,
+    );
     try {
       return this.prismaService.template.update({
         where: { id },
         data: {
-          ...updateTemplateDto,
-          fields: updateTemplateDto.fields
-            ? {
-                upsert: updateTemplateDto.fields.map((field) => ({
-                  where: { id: field.id },
-                  update: field,
-                  create: field,
-                })),
-              }
-            : undefined,
+          name: updateTemplateDto.name,
+          status: updateTemplateDto.status,
+          pdfFile: updateTemplateDto.pdfFile,
+          containerWidth: updateTemplateDto.containerWidth,
+          updatedAt: new Date(),
+          fields: {
+            upsert:
+              updateTemplateDto.fields?.map((field) => ({
+                where: { id: field.id || '' },
+                create: field,
+                update: field,
+              })) || [],
+            deleteMany: {
+              id: {
+                notIn: updateTemplateDto.fields?.map((field) => field.id) || [],
+              },
+            },
+          },
         },
       });
     } catch (error) {

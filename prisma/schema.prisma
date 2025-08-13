@@ -21,6 +21,11 @@ enum Status {
   INACTIVE
 }
 
+enum TipoTraza {
+  NACIONAL
+  INTERNACIONAL
+}
+
 model User {
   id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   username  String   @unique
@@ -117,6 +122,7 @@ model Traza {
   createdAt                   DateTime              @default(now())
   updatedAt                   DateTime              @updatedAt
   status                      Status                @default(ACTIVE)
+  tipoTraza                   TipoTraza             @default(NACIONAL)
   tadDireccion                TadDireccion?         @relation(fields: [tadDireccionId], references: [id])
   tadDireccionId              String?               @db.Uuid
   claveConcentradora          ClaveConcentradora?   @relation(fields: [claveConcentradoraId], references: [id])

@@ -6,7 +6,7 @@ import {
   IsString,
   IsUUID,
 } from 'class-validator';
-import { Status, Traza } from '@prisma/client';
+import { Status, TipoTraza, Traza } from '@prisma/client';
 import { Exclude, Transform } from 'class-transformer';
 
 export class TrazaDto implements Traza {
@@ -16,6 +16,9 @@ export class TrazaDto implements Traza {
 
   @IsUUID()
   id: string;
+
+  @IsEnum(Status)
+  tipoTraza: TipoTraza = TipoTraza.NACIONAL;
 
   @IsUUID()
   @IsNotEmpty()
