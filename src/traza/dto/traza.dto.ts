@@ -205,6 +205,10 @@ export class TrazaDto implements Traza {
 
   @Exclude()
   updatedAt: Date;
+
+  @IsUUID()
+  @IsOptional()
+  clienteId: string | null;
 }
 
 export type CreateTrazaDto = Omit<TrazaDto, 'id' | 'createdAt' | 'updatedAt'>;
