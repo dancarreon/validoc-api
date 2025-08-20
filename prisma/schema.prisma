@@ -9,9 +9,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-  //directUrl = env("DIRECT_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 // prisma/schema.prisma
@@ -172,6 +172,8 @@ model Traza {
   folioCartaPorte             String?
   folioFiscalCartaPorte       String?
   fechaHoraCartaPorte         String?
+  cliente                     Cliente?              @relation(fields: [clienteId], references: [id])
+  clienteId                   String?               @db.Uuid
 }
 
 model Template {
@@ -219,6 +221,7 @@ model Cliente {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
   status         Status   @default(ACTIVE)
+  Traza          Traza[]
 
   @@index([noCliente], type: BTree)
   @@index([rfc], type: BTree)
