@@ -36,6 +36,10 @@ export class TrazaDto implements Traza {
   @IsNotEmpty()
   productoId: string | null;
 
+  @IsUUID()
+  @IsOptional()
+  clienteId: string | null;
+
   @IsOptional()
   @IsNumber()
   @Transform(({ value }) => (value ? Number(value) : null))
@@ -200,15 +204,17 @@ export class TrazaDto implements Traza {
   @IsEnum(Status)
   status: Status = Status.ACTIVE;
 
+  @IsUUID()
+  consecutivoId: string | null;
+
+  @IsUUID()
+  solicitanteId: string | null;
+
   @Exclude()
   createdAt: Date;
 
   @Exclude()
   updatedAt: Date;
-
-  @IsUUID()
-  @IsOptional()
-  clienteId: string | null;
 }
 
 export type CreateTrazaDto = Omit<TrazaDto, 'id' | 'createdAt' | 'updatedAt'>;

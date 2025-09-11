@@ -2,6 +2,7 @@ import { Status, Template } from '@prisma/client';
 import { IsEnum, IsNumber, IsString, IsUUID } from 'class-validator';
 import { Exclude } from 'class-transformer';
 import { TemplateFieldDto } from './template-field.dto';
+import { QrFieldDto } from './qr-field.dto';
 
 export class TemplateDto implements Template {
   constructor(partial: Partial<TemplateDto>) {
@@ -18,6 +19,8 @@ export class TemplateDto implements Template {
   status: Status = Status.ACTIVE;
 
   fields: TemplateFieldDto[];
+
+  qrField: QrFieldDto[];
 
   @IsString()
   pdfFile: string | null;

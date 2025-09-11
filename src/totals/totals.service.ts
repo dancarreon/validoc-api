@@ -219,7 +219,7 @@ export class TotalsService {
       `Getting count of Templates using params: ${JSON.stringify(query)}`,
     );
 
-    if (query?.search && query.search !== '') {
+    if (query.search) {
       return this.prismaService.template.count({
         where: {
           OR: [
@@ -232,9 +232,9 @@ export class TotalsService {
           ],
         },
       });
+    } else {
+      return this.prismaService.template.count();
     }
-
-    return this.prismaService.template.count();
   }
 
   totalClients(query: QueryParams) {
@@ -273,8 +273,48 @@ export class TotalsService {
           ],
         },
       });
+    } else {
+      return this.prismaService.cliente.count();
     }
+  }
 
-    return this.prismaService.cliente.count();
+  totalSolictantes(query: QueryParams) {
+    this.logger.log(
+      `Getting count of Solicitantes using params: ${JSON.stringify(query)}`,
+    );
+
+    if (query?.search && query.search !== '') {
+      return this.prismaService.solicitante.count({
+        where: {
+          OR: [
+            {
+              name: { contains: query.search, mode: 'insensitive' },
+            },
+          ],
+        },
+      });
+    } else {
+      return this.prismaService.solicitante.count();
+    }
+  }
+
+  totalConsecutivos(query: QueryParams) {
+    this.logger.log(
+      `Getting count of Consecutivos using params: ${JSON.stringify(query)}`,
+    );
+
+    if (query?.search && query.search !== '') {
+      return this.prismaService.consecutivo.count({
+        where: {
+          OR: [
+            {
+              valor: { equals: query.search },
+            },
+          ],
+        },
+      });
+    } else {
+      return this.prismaService.consecutivo.count();
+    }
   }
 }

@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Consecutivo" ALTER COLUMN "valor" SET DEFAULT '1',
+ALTER COLUMN "valor" SET DATA TYPE TEXT;

@@ -20,6 +20,9 @@ export class TemplateFieldDto implements TemplateField {
   @IsString()
   name: string;
 
+  @IsString()
+  type: string;
+
   @IsNumber()
   x: number;
 

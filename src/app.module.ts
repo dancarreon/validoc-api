@@ -17,6 +17,8 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { TemplateModule } from './template/template.module';
 import { ClientsModule } from './clients/clients.module';
 import { SeedModule } from './seed/seed.module';
+import { SolicitantesModule } from './solicitantes/solicitantes.module';
+import { ConsecutivosModule } from './consecutivos/consecutivos.module';
 
 @Module({
   imports: [
@@ -39,6 +41,8 @@ import { SeedModule } from './seed/seed.module';
     TemplateModule,
     ClientsModule,
     SeedModule,
+    SolicitantesModule,
+    ConsecutivosModule,
   ],
   controllers: [AppController],
   providers: [AppService],

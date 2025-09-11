@@ -21,6 +21,9 @@ export class TemplateService {
         fields: createTemplateDto.fields
           ? { create: createTemplateDto.fields }
           : undefined,
+        qrField: createTemplateDto.qrField
+          ? { create: createTemplateDto.qrField }
+          : undefined,
       },
     });
   }
@@ -44,6 +47,7 @@ export class TemplateService {
         skip: query.page * query.size,
         include: {
           fields: true,
+          qrField: true,
         },
         where: {
           OR: [{ name: { contains: query.search, mode: 'insensitive' } }],
@@ -56,6 +60,7 @@ export class TemplateService {
         skip: query.page * query.size,
         include: {
           fields: true,
+          qrField: true,
         },
         where: {},
         orderBy: query.orderAndSort || [{ name: 'asc' }],
@@ -70,6 +75,7 @@ export class TemplateService {
         where: { id },
         include: {
           fields: true,
+          qrField: true,
         },
       });
     } catch (error) {
@@ -101,6 +107,20 @@ export class TemplateService {
             deleteMany: {
               id: {
                 notIn: updateTemplateDto.fields?.map((field) => field.id) || [],
+              },
+            },
+          },
+          qrField: {
+            upsert:
+              updateTemplateDto.qrField?.map((field) => ({
+                where: { id: field.id || '' },
+                create: field,
+                update: field,
+              })) || [],
+            deleteMany: {
+              id: {
+                notIn:
+                  updateTemplateDto.qrField?.map((field) => field.id) || [],
               },
             },
           },
