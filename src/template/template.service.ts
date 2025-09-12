@@ -89,6 +89,16 @@ export class TemplateService {
       `Updating template with id ${id} with data: ${JSON.stringify(updateTemplateDto)}`,
     );
     try {
+      const validFieldIds =
+        updateTemplateDto.fields
+          ?.filter((field) => field.id !== undefined)
+          .map((field) => field.id) || [];
+
+      const validQrFieldIds =
+        updateTemplateDto.qrField
+          ?.filter((field) => field.id !== undefined)
+          .map((field) => field.id) || [];
+
       return this.prismaService.template.update({
         where: { id },
         data: {
@@ -99,28 +109,31 @@ export class TemplateService {
           updatedAt: new Date(),
           fields: {
             upsert:
-              updateTemplateDto.fields?.map((field) => ({
-                where: { id: field.id || '' },
-                create: field,
-                update: field,
-              })) || [],
+              updateTemplateDto.fields
+                ?.filter((field) => field.id) // Exclude fields without `id`
+                .map((field) => ({
+                  where: { id: field.id },
+                  create: field,
+                  update: field,
+                })) || [],
             deleteMany: {
               id: {
-                notIn: updateTemplateDto.fields?.map((field) => field.id) || [],
+                notIn: validFieldIds,
               },
             },
           },
           qrField: {
             upsert:
-              updateTemplateDto.qrField?.map((field) => ({
-                where: { id: field.id || '' },
-                create: field,
-                update: field,
-              })) || [],
+              updateTemplateDto.qrField
+                ?.filter((field) => field.id) // Exclude fields without `id`
+                .map((field) => ({
+                  where: { id: field.id },
+                  create: field,
+                  update: field,
+                })) || [],
             deleteMany: {
               id: {
-                notIn:
-                  updateTemplateDto.qrField?.map((field) => field.id) || [],
+                notIn: validQrFieldIds,
               },
             },
           },
