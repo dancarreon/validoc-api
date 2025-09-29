@@ -27,16 +27,13 @@ export class ProductoDto implements Producto {
   descripcion: string;
 
   @IsString()
-  @IsNotEmpty()
-  iva: string;
+  iva: string | null;
 
   @IsString()
-  @IsNotEmpty()
-  densidad: string;
+  densidad: string | null;
 
   @IsString()
-  @IsNotEmpty()
-  temperatura: string;
+  temperatura: string | null;
 
   @Exclude()
   createdAt: Date;
