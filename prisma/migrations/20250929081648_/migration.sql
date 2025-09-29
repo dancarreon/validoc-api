@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "Producto" ALTER COLUMN "densidad" DROP NOT NULL,
+ALTER COLUMN "iva" DROP NOT NULL,
+ALTER COLUMN "temperatura" DROP NOT NULL;

@@ -13,26 +13,27 @@ export class TrazaService {
     this.logger.log(`Creating a new traza`);
     this.logger.debug(traza);
 
-    // Get consecutivo value
-    const consecutivo = await this.prismaService.consecutivo.findFirst();
-    // If consecutivo exists, increment its value by 1
-    if (consecutivo) {
-      const nextFolio = Number(consecutivo.valor) + 1;
-      await this.prismaService.consecutivo.update({
-        where: { id: consecutivo.id },
-        data: { valor: nextFolio.toString() },
-      });
-    } else {
-      // If consecutivo does not exist, create it with value 1
-      await this.prismaService.consecutivo.create({
-        data: { valor: '1' },
-      });
-    }
+    return this.prismaService.$transaction(async (tx) => {
+      let consecutivoId = await tx.consecutivo.findFirst();
 
-    traza.consecutivoId = consecutivo ? consecutivo.id : null;
+      if (!consecutivoId) {
+        consecutivoId = await tx.consecutivo.create({
+          data: { valor: '1' },
+        });
+      } else {
+        const newValor = (parseInt(consecutivoId.valor, 10) + 1).toString();
+        await tx.consecutivo.update({
+          where: { id: consecutivoId.id },
+          data: { valor: newValor },
+        });
+        consecutivoId.valor = newValor;
+      }
 
-    return this.prismaService.traza.create({
-      data: traza,
+      traza.consecutivoId = consecutivoId.id;
+
+      return this.prismaService.traza.create({
+        data: traza,
+      });
     });
   }
 

@@ -205,9 +205,11 @@ export class TrazaDto implements Traza {
   status: Status = Status.ACTIVE;
 
   @IsUUID()
+  @IsNotEmpty()
   consecutivoId: string | null;
 
   @IsUUID()
+  @IsNotEmpty()
   solicitanteId: string | null;
 
   @Exclude()

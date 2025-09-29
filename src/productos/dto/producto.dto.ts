@@ -12,11 +12,31 @@ export class ProductoDto implements Producto {
 
   @IsString()
   @IsNotEmpty()
+  idProducto: string;
+
+  @IsString()
+  @IsNotEmpty()
   clave: string;
 
   @IsString()
   @IsNotEmpty()
+  name: string;
+
+  @IsString()
+  @IsNotEmpty()
   descripcion: string;
+
+  @IsString()
+  @IsNotEmpty()
+  iva: string;
+
+  @IsString()
+  @IsNotEmpty()
+  densidad: string;
+
+  @IsString()
+  @IsNotEmpty()
+  temperatura: string;
 
   @Exclude()
   createdAt: Date;

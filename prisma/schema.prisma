@@ -94,8 +94,13 @@ model RazonSocialComercial {
 
 model Producto {
   id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  idProducto  String
   clave       String
+  name        String
   descripcion String
+  iva         String?
+  densidad    String?
+  temperatura String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   status      Status   @default(ACTIVE)

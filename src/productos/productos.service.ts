@@ -30,10 +30,25 @@ export class ProductosService {
         where: {
           OR: [
             {
+              idProducto: { contains: query.search, mode: 'insensitive' },
+            },
+            {
               clave: { contains: query.search, mode: 'insensitive' },
             },
             {
+              name: { contains: query.search, mode: 'insensitive' },
+            },
+            {
               descripcion: { contains: query.search, mode: 'insensitive' },
+            },
+            {
+              iva: { contains: query.search, mode: 'insensitive' },
+            },
+            {
+              densidad: { contains: query.search, mode: 'insensitive' },
+            },
+            {
+              temperatura: { contains: query.search, mode: 'insensitive' },
             },
           ],
         },
